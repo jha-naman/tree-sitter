@@ -2,6 +2,7 @@ package common
 
 import (
 	"fmt"
+	"log"
 	"strings"
 )
 
@@ -23,4 +24,23 @@ func (t TagEntry) Bytes() []byte {
 	}
 
 	return []byte(strings.Join(tagFields, "\t"))
+}
+
+var allowedFieldNames = []string{"Name", "FileName", "Address", "Kind", "ExtensionFields"}
+
+func (t *TagEntry) SetFieldByName(fieldName string, value interface{}) {
+	switch fieldName {
+	case "Name":
+		t.Name = value.(string)
+	case "FileName":
+		t.FileName = value.(string)
+	case "Address":
+		t.Address = value.(string)
+	case "Kind":
+		t.Kind = value.(string)
+	case "ExtensionFields":
+		t.ExtensionFields = value.(map[string]string)
+	default:
+		log.Fatalf("invalid field name %s. should be one of %v", fieldName, allowedFieldNames)
+	}
 }
