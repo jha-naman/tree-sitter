@@ -54,4 +54,3 @@ func (p *Processor) processConstSpec() {
 
 	p.Tags = append(p.Tags, identifierTags...)
 }
-

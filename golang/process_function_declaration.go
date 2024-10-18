@@ -43,4 +43,3 @@ func (p *Processor) processFunctionDeclaration() {
 
 	p.Tags = append(p.Tags, tag)
 }
-

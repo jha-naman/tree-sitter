@@ -28,4 +28,3 @@ func (p *Processor) processPackageDeclaration() {
 
 	p.Tags = append(p.Tags, tag)
 }
-

@@ -13,10 +13,10 @@ type TagEntry struct {
 
 func (t TagEntry) Bytes() []byte {
 	tagFields := []string{
-				t.Name,
-				t.FileName,
-				t.Address,
-				t.Kind,
+		t.Name,
+		t.FileName,
+		t.Address,
+		t.Kind,
 	}
 
 	for k, v := range t.ExtensionFields {

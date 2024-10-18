@@ -17,11 +17,11 @@ import (
 )
 
 type Processor struct {
-	Tags []common.TagEntry
-	FileBytes [][]byte
-	FileName string
+	Tags        []common.TagEntry
+	FileBytes   [][]byte
+	FileName    string
 	packageName string
-	cursor *sitter.TreeCursor
+	cursor      *sitter.TreeCursor
 }
 
 func GetFileTags(fileName string) []common.TagEntry {

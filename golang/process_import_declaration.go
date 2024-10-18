@@ -58,9 +58,8 @@ func (p *Processor) processImportSpec() {
 	node = cursor.CurrentNode()
 
 	tag.ExtensionFields = map[string]string{
-		"package": string(line[node.StartPoint().Column+1:node.EndPoint().Column-1]),
+		"package": string(line[node.StartPoint().Column+1 : node.EndPoint().Column-1]),
 	}
 
 	p.Tags = append(p.Tags, tag)
 }
-
