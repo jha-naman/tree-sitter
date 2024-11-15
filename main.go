@@ -10,7 +10,6 @@ import (
 	"path"
 	"slices"
 	"sort"
-	"strings"
 
 	common "github.com/jha-naman/tree-tags/common"
 	golang "github.com/jha-naman/tree-tags/golang"
@@ -116,59 +115,9 @@ func initTags(fileNamesToSkip []string) ([]common.TagEntry, error) {
 
 	for scanner.Scan() {
 		text := scanner.Text()
-		if strings.HasPrefix(text, "!_TAG_") {
+		tag, err := common.TagFromString(text)
+		if errors.Is(err, common.ErrStringIsAComment) {
 			continue
-		}
-
-		fields := []string{"Name", "FileName", "Address", "Kind", "ExtensionFields"}
-		fieldIndex := 0
-		tag := common.TagEntry{}
-		var theOneBeforeChar, previousChar rune
-		var fieldAggregator string
-		var extensionFields = make(map[string]string)
-
-		for _, runeValue := range text {
-			switch fields[fieldIndex] {
-			case "Name", "FileName", "Kind":
-				if runeValue != '\t' {
-					fieldAggregator += string(runeValue)
-					continue
-				}
-
-				tag.SetFieldByName(fields[fieldIndex], fieldAggregator)
-				fieldIndex++
-				fieldAggregator = ""
-			case "Address":
-				if theOneBeforeChar == ';' && previousChar == '"' && runeValue == '\t' {
-					tag.SetFieldByName(fields[fieldIndex], fieldAggregator)
-					fieldAggregator = ""
-					fieldIndex++
-				}
-
-				fieldAggregator += string(runeValue)
-				theOneBeforeChar = previousChar
-				previousChar = runeValue
-			case "ExtensionFields":
-				if runeValue != '\t' {
-					fieldAggregator += string(runeValue)
-					continue
-				}
-
-				splits := strings.Split(fieldAggregator, ":")
-				extensionFields[splits[0]] = splits[1]
-				fieldAggregator = ""
-			}
-		}
-
-		if fieldAggregator != "" {
-			switch fields[fieldIndex] {
-			case "ExtensionFields":
-				splits := strings.Split(fieldAggregator, ":")
-				extensionFields[splits[0]] = splits[1]
-				tag.SetFieldByName("ExtensionFields", extensionFields)
-			default:
-				tag.SetFieldByName(fields[fieldIndex], fieldAggregator)
-			}
 		}
 
 		if !slices.Contains(fileNamesToSkip, tag.FileName) {
