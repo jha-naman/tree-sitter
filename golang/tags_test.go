@@ -11,7 +11,7 @@ import (
 func TestPackageDeclaration(t *testing.T) {
 	input := "package treetags\n"
 	expectedTags := []common.TagEntry{
-		common.TagEntry{
+		{
 			Name:            "treetags",
 			FileName:        "",
 			Address:         "/^package treetags$/;\"",
@@ -31,7 +31,7 @@ func TestImportDeclaration(t *testing.T) {
 		{
 			input: `import assert "github.com/stretchr/testify/assert"`,
 			expectedTags: []common.TagEntry{
-				common.TagEntry{Name: "assert", FileName: "", Address: `/^import assert "github.com\/stretchr\/testify\/assert"$/;"`, Kind: "P", ExtensionFields: map[string]string{"package": "github.com/stretchr/testify/assert"}},
+				{Name: "assert", FileName: "", Address: `/^import assert "github.com\/stretchr\/testify\/assert"$/;"`, Kind: "P", ExtensionFields: map[string]string{"package": "github.com/stretchr/testify/assert"}},
 			},
 		},
 		{
@@ -43,7 +43,7 @@ func TestImportDeclaration(t *testing.T) {
 			)
 			`,
 			expectedTags: []common.TagEntry{
-				common.TagEntry{
+				{
 					Name:            "assert",
 					FileName:        "",
 					Address:         "/^\t\t\t\tassert \"github.com\\/stretchr\\/testify\\/assert\"$/;\"",
@@ -67,14 +67,14 @@ func TestFunctionDeclaration(t *testing.T) {
 		{
 			input: `package main; func main() {}`,
 			expectedTags: []common.TagEntry{
-				common.TagEntry{
+				{
 					Name:            "main",
 					FileName:        "",
 					Address:         `/^package main; func main() {}$/;"`,
 					Kind:            "p",
 					ExtensionFields: nil,
 				},
-				common.TagEntry{
+				{
 					Name:            "main",
 					FileName:        "",
 					Address:         "/^package main; func main() {}$/;\"",
@@ -86,14 +86,14 @@ func TestFunctionDeclaration(t *testing.T) {
 		{
 			input: `package main; func foo(bar, baz string, arr []string) (error, map[string]string) {}`,
 			expectedTags: []common.TagEntry{
-				common.TagEntry{
+				{
 					Name:            "main",
 					FileName:        "",
 					Address:         `/^package main; func foo(bar, baz string, arr []string) (error, map[string]string) {}$/;"`,
 					Kind:            "p",
 					ExtensionFields: nil,
 				},
-				common.TagEntry{
+				{
 					Name:            "foo",
 					FileName:        "",
 					Address:         `/^package main; func foo(bar, baz string, arr []string) (error, map[string]string) {}$/;"`,
@@ -118,7 +118,7 @@ func TestVarDeclaration(t *testing.T) {
 		{
 			input: "package main; var x, y int",
 			expectedTags: []common.TagEntry{
-				common.TagEntry{
+				{
 					Name:            "main",
 					FileName:        "",
 					Address:         `/^package main; var x, y int$/;"`,
@@ -126,14 +126,14 @@ func TestVarDeclaration(t *testing.T) {
 					ExtensionFields: nil,
 				},
 
-				common.TagEntry{
+				{
 					Name:            "x",
 					FileName:        "",
 					Address:         `/^package main; var x, y int$/;"`,
 					Kind:            "v",
 					ExtensionFields: map[string]string{"package": "main", "typeref:typename": "int"},
 				},
-				common.TagEntry{
+				{
 					Name:            "y",
 					FileName:        "",
 					Address:         `/^package main; var x, y int$/;"`,
@@ -153,41 +153,41 @@ var (
 )
 			`,
 			expectedTags: []common.TagEntry{
-				common.TagEntry{
+				{
 					Name:            "main",
 					FileName:        "",
 					Address:         "/^package main$/;\"",
 					Kind:            "p",
 					ExtensionFields: nil,
 				},
-				common.TagEntry{
+				{
 					Name:            "a",
 					FileName:        "",
 					Address:         "/^\ta, b int$/;\"",
 					Kind:            "v",
 					ExtensionFields: map[string]string{"package": "main", "typeref:typename": "int"},
 				},
-				common.TagEntry{Name: "b",
+				{Name: "b",
 					FileName:        "",
 					Address:         "/^\ta, b int$/;\"",
 					Kind:            "v",
 					ExtensionFields: map[string]string{"package": "main", "typeref:typename": "int"},
 				},
-				common.TagEntry{
+				{
 					Name:            "x",
 					FileName:        "",
 					Address:         "/^\tx map[string]string$/;\"",
 					Kind:            "v",
 					ExtensionFields: map[string]string{"package": "main", "typeref:typename": "map[string]string"},
 				},
-				common.TagEntry{
+				{
 					Name:            "i",
 					FileName:        "",
 					Address:         "/^\ti interface{}$/;\"",
 					Kind:            "v",
 					ExtensionFields: map[string]string{"package": "main", "typeref:typename": "interface{}"},
 				},
-				common.TagEntry{
+				{
 					Name:            "z",
 					FileName:        "",
 					Address:         "/^\tz = \"zed\"$/;\"",
@@ -211,7 +211,7 @@ func TestConstDeclaration(t *testing.T) {
 		{
 			input: `package main; const foo = "foo"`,
 			expectedTags: []common.TagEntry{
-				common.TagEntry{
+				{
 					Name:            "main",
 					FileName:        "",
 					Address:         `/^package main; const foo = "foo"$/;"`,
@@ -219,7 +219,7 @@ func TestConstDeclaration(t *testing.T) {
 					ExtensionFields: nil,
 				},
 
-				common.TagEntry{
+				{
 					Name:            "foo",
 					FileName:        "",
 					Address:         `/^package main; const foo = "foo"$/;"`,
@@ -237,21 +237,21 @@ const (
 )
 	`,
 			expectedTags: []common.TagEntry{
-				common.TagEntry{
+				{
 					Name:            "main",
 					FileName:        "",
 					Address:         `/^package main$/;"`,
 					Kind:            "p",
 					ExtensionFields: nil,
 				},
-				common.TagEntry{
+				{
 					Name:            "foo",
 					FileName:        "",
 					Address:         "/^\tfoo = \"foo\"$/;\"",
 					Kind:            "c",
 					ExtensionFields: map[string]string{"package": "main"},
 				},
-				common.TagEntry{
+				{
 					Name:            "bar",
 					FileName:        "",
 					Address:         "/^\tbar = 1$/;\"",
@@ -276,21 +276,21 @@ func TestTypeDeclaration(t *testing.T) {
 		{
 			input: "package main; type Alias int; type AnotherOne Alias",
 			expectedTags: []common.TagEntry{
-				common.TagEntry{
+				{
 					Name:            "main",
 					FileName:        "",
 					Address:         "/^package main; type Alias int; type AnotherOne Alias$/;\"",
 					Kind:            "p",
 					ExtensionFields: nil,
 				},
-				common.TagEntry{
+				{
 					Name:            "Alias",
 					FileName:        "",
 					Address:         "/^package main; type Alias int; type AnotherOne Alias$/;\"",
 					Kind:            "t",
 					ExtensionFields: map[string]string{"package": "main", "typeref:typename": "int"},
 				},
-				common.TagEntry{
+				{
 					Name:            "AnotherOne",
 					FileName:        "",
 					Address:         "/^package main; type Alias int; type AnotherOne Alias$/;\"",
@@ -302,14 +302,14 @@ func TestTypeDeclaration(t *testing.T) {
 		{
 			input: "package main; type Alias = map[string]string",
 			expectedTags: []common.TagEntry{
-				common.TagEntry{
+				{
 					Name:            "main",
 					FileName:        "",
 					Address:         "/^package main; type Alias = map[string]string$/;\"",
 					Kind:            "p",
 					ExtensionFields: nil,
 				},
-				common.TagEntry{
+				{
 					Name:            "Alias",
 					FileName:        "",
 					Address:         "/^package main; type Alias = map[string]string$/;\"",
@@ -339,28 +339,28 @@ func (f foo) String() {}
 func (f *foo) Bar(baz string) map[string]string { return nil }
 			`,
 			expectedTags: []common.TagEntry{
-				common.TagEntry{
+				{
 					Name:            "main",
 					FileName:        "",
 					Address:         "/^package main$/;\"",
 					Kind:            "p",
 					ExtensionFields: nil,
 				},
-				common.TagEntry{
+				{
 					Name:            "foo",
 					FileName:        "",
 					Address:         "/^type foo int$/;\"",
 					Kind:            "t",
 					ExtensionFields: map[string]string{"package": "main", "typeref:typename": "int"},
 				},
-				common.TagEntry{
+				{
 					Name:            "String",
 					FileName:        "",
 					Address:         "/^func (f foo) String() {}$/;\"",
 					Kind:            "f",
 					ExtensionFields: map[string]string{"unkown": "main.foo"},
 				},
-				common.TagEntry{
+				{
 					Name:            "Bar",
 					FileName:        "",
 					Address:         "/^func (f *foo) Bar(baz string) map[string]string { return nil }$/;\"",
